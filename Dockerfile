@@ -8,13 +8,18 @@ ARG JENKINS_AGENT_HOME=/home/${user}
 
 ENV JENKINS_AGENT_HOME ${JENKINS_AGENT_HOME}
 
+
+
 RUN groupadd -g ${gid} ${group} \
     && useradd -d "${JENKINS_AGENT_HOME}" -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}"
+
+RUN ln -s /usr/local/openjdk-8/bin/java /usr/local/bin/java
 
 # setup SSH server
 RUN apt-get update \
     && apt-get install --no-install-recommends -y openssh-server \
     && rm -rf /var/lib/apt/lists/*
+
 RUN sed -i /etc/ssh/sshd_config \
         -e 's/#PermitRootLogin.*/PermitRootLogin no/' \
         -e 's/#RSAAuthentication.*/RSAAuthentication yes/'  \
@@ -35,6 +40,10 @@ RUN apt-get -qqy update && apt-get -y install \
     apt-transport-https ca-certificates curl lxc iptables \
     build-essential git wget \
     python3 python-pip python3-pip
+
+# install packages
+RUN pip3 install setuptools && \
+    pip3 install fire pyyaml
 
 # install docker
 RUN apt-get install -y \
