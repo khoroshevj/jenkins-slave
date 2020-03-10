@@ -73,7 +73,7 @@ RUN wget -q https://releases.hashicorp.com/consul/1.7.0/consul_1.7.0_linux_amd64
     rm consul*
 
 # misc
-RUN apt-get install jq
+RUN apt-get install -y jq
 
 EXPOSE 22
 
