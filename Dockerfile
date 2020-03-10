@@ -72,6 +72,9 @@ RUN wget -q https://releases.hashicorp.com/consul/1.7.0/consul_1.7.0_linux_amd64
     mv ./consul /opt/consul/ && \
     rm consul*
 
+# misc
+RUN apt-get install jq
+
 EXPOSE 22
 
 ENTRYPOINT ["run.sh"]
